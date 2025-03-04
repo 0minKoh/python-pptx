@@ -1,0 +1,32 @@
+{
+  "NAME_OF_PRAYER": "기도자",
+  "NAME_OF_OFFERING": "(고정값) 이현",
+  "NAME_OF_ADS": "(고정값) 노진수",
+  "BIBLE_RANGE": {
+    "BIBLE_BOOK": "bible_book (예: 요한복음)",
+    "BIBLE_CH_BEGIN": "(int) 시작 장",
+    "BIBLE_VERSE_BEGIN": "(int) 시작 절",
+    "BIBLE_CH_END": "(int) 끝 장",
+    "BIBLE_VERSE_END": "(int) 끝 절"
+  },
+  "TITLE_OF_SERMON": "설교 제목",
+  "ENDING_SONG_TITLE": "결단찬양제목",
+  "ENDING_PRAYER": "(고정값) 노진수",
+  "ads": [
+    {
+      "title": "# 광고 1",
+      "contents": "광고 테스트\n광고 테스트\n광고 테스트"
+    },
+    {
+      "title": "# 광고 2",
+      "contents": "광고 테스트\n광고 테스트\n광고 테스트"
+    }
+  ],
+  "ending_song": {
+    "title_page_index": 23,
+    "lyrics_page_index": 24,
+    "url": "(고정값) https://music.bugs.co.kr/track/30252593",
+    "title": "결단찬양제목",
+    "splitted_lyrics": []
+  }
+}

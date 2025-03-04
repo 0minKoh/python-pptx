@@ -1,5 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
+from utils.data.bible_code import get_bible_code
 import json
 
 def crawl_lyrics(song_url: str) -> str:
@@ -17,7 +18,8 @@ def split_lyrics(crawled_text: str, json_url: str) -> list:
     return []
 
 def get_bible_contents(bible_book: str, begin_ch: int, begin_verse: int, end_ch: int, end_verse: int) -> list:
-    get_bible_url = f"https://ibibles.net/quote.php?kor-{bible_book}/{begin_ch}:{begin_verse}-{end_ch}:{end_verse}"
+    bible_book_code = get_bible_code(bible_book)
+    get_bible_url = f"https://ibibles.net/quote.php?kor-{bible_book_code}/{begin_ch}:{begin_verse}-{end_ch}:{end_verse}"
     # https://ibibles.net/quote.php?kor-mat/5:3-12
     response = requests.get(get_bible_url)
     soup = BeautifulSoup(response.text, 'html.parser')

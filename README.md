@@ -1,5 +1,3 @@
-# 🚧 준비중
-
 # Bible Display API
 
 ## Reference
@@ -80,6 +78,11 @@ f"http://ibibles.net/quote.php?{BIBLE_VER}-{BIBLE_BOOK}/{CH_BEGIN}:{VERSE_BEGIN}
   - 3jn (요한3서)
   - jude (유다서)
   - rev (요한계시록)
+
+### examples
+
+https://ibibles.net/quote.php?kor-mat/5:3-12
+마태복음 5:3-12
 
 ## docs
 

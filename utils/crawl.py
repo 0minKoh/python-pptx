@@ -16,10 +16,15 @@ def split_lyrics(crawled_text: str, json_url: str) -> list:
         return data["lyrics"]
     return []
 
-# def split_lyrics() -> list:
-#     # LLM API를 연동하기 전입니다.
-#     input("json 파일이 준비되면 아무 키나 누르세요")
-#     with open("utils/json/lyrics.json", "r", encoding="utf-8") as f:
-#         data = json.load(f)
-#         return data["lyrics"]
-#     return []
+def get_bible_contents(bible_book: str, begin_ch: int, begin_verse: int, end_ch: int, end_verse: int) -> list:
+    get_bible_url = f"https://ibibles.net/quote.php?kor-{bible_book}/{begin_ch}:{begin_verse}-{end_ch}:{end_verse}"
+    # https://ibibles.net/quote.php?kor-mat/5:3-12
+    response = requests.get(get_bible_url)
+    soup = BeautifulSoup(response.text, 'html.parser')
+    verses = []
+    for small_tag in soup.find_all('small'):
+        verse_number = small_tag.text
+        verse_content = small_tag.next_sibling.strip()
+        verses.append({"title": f"마태복음 {verse_number}", "contents": verse_content})
+
+    return verses

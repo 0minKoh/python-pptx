@@ -8,7 +8,7 @@ def call_llm_api(prompt: str) -> str:
     client = genai.Client(api_key=GEMINI_API_KEY)
 
     response = client.models.generate_content(
-        model="gemini-2.0-flash-lite",
+        model="gemini-2.0-flash",
         contents=[prompt])
     return response.text
 
@@ -28,9 +28,9 @@ def make_requirements_of_paster_json(requirement_txt: str) -> str:
     return json_url
 
 def organize_requirements_of_team_wakeup(requirements_txt: str) -> str:
-    # 1. import prompt template: prompt_requirements_team_wakeup_txt
+    # 1. import prompt template: prompt_requirements_team_wakeup_1.txt
     prompt_requirements_team_wakeup_txt = f"```txt\n{requirements_txt}\n```\n\n"
-    with open("prompts/prompt_requirement_team_wakeup.txt", "r", encoding="utf-8") as file:
+    with open("prompts/prompt_requirement_team_wakeup_1.txt", "r", encoding="utf-8") as file:
         prompt_requirements_team_wakeup_txt += file.read()
 
     # 2. call LLM API
@@ -41,3 +41,4 @@ def organize_requirements_of_team_wakeup(requirements_txt: str) -> str:
     with open(json_url, "w", encoding="utf-8") as file:
         file.write(response)
     return json_url
+

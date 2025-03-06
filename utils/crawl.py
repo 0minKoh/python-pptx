@@ -15,7 +15,7 @@ def crawl_lyrics(song_url: str) -> str:
 
 def split_lyrics_to_json(req_split_lyrics: list) -> str:
     # 1. import prompt template: prompts/prompt_requirement_team_wakeup_2.txt
-    prompt_req_lyrics_split = f"```txt\n{req_split_lyrics}\n```\n\n"
+    prompt_req_lyrics_split = f"```json\n{req_split_lyrics}\n```\n\n"
     with open("prompts/prompt_requirement_team_wakeup_2.txt", "r", encoding="utf-8") as file:
         prompt_req_lyrics_split += file.read()
 

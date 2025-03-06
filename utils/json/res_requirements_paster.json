@@ -1,32 +1,44 @@
 {
-  "NAME_OF_PRAYER": "기도자",
-  "NAME_OF_OFFERING": "(고정값) 이현",
-  "NAME_OF_ADS": "(고정값) 노진수",
+  "NAME_OF_PRAYER": "정지혁 청년",
+  "NAME_OF_OFFERING": "이현 청년",
+  "NAME_OF_ADS": "노진수 목사",
   "BIBLE_RANGE": {
-    "BIBLE_BOOK": "bible_book (예: 요한복음)",
-    "BIBLE_CH_BEGIN": "(int) 시작 장",
-    "BIBLE_VERSE_BEGIN": "(int) 시작 절",
-    "BIBLE_CH_END": "(int) 끝 장",
-    "BIBLE_VERSE_END": "(int) 끝 절"
+    "BIBLE_BOOK": "출애굽기",
+    "BIBLE_CH_BEGIN": 20,
+    "BIBLE_VERSE_BEGIN": 8,
+    "BIBLE_CH_END": 20,
+    "BIBLE_VERSE_END": 11
   },
-  "TITLE_OF_SERMON": "설교 제목",
-  "ENDING_SONG_TITLE": "결단찬양제목",
-  "ENDING_PRAYER": "(고정값) 노진수",
+  "TITLE_OF_SERMON": "그리스도인들에게 안식일로서 주일이 갖는 의미1",
+  "ENDING_SONG_TITLE": "내 눈 주의 영광을 보네",
+  "ENDING_PRAYER": "노진수 목사",
   "ads": [
     {
-      "title": "# 광고 1",
-      "contents": "광고 테스트\n광고 테스트\n광고 테스트"
+      "title": "# 주현절 일곱째 주일 예배",
+      "contents": "2025년 2월 23일 주현절 일곱째 주일 4부 예배에 오신 여러분을 환영하고 축복합니다."
     },
     {
-      "title": "# 광고 2",
-      "contents": "광고 테스트\n광고 테스트\n광고 테스트"
+      "title": "# 담임목사님 말씀",
+      "contents": "오늘과 다음 주일은 담임목사님께서 그리스도인들에게 안식일로서 주일이 갖는 의미에 대해 말씀을 전해주십니다."
+    },
+    {
+      "title": "# 청년회 동계수련회",
+      "contents": "청년회 동계수련회를 은혜 가운데 마쳤습니다^^"
+    },
+    {
+      "title": "# 다음세대와 함께하는 새벽기도회",
+      "contents": "일시: 2.24(월)~28일(금) 오전 5:30\n장소: 본당\n*청년부특송: 28일 금요일, 오전 5시 10분 에벤에솔홀에서 모입니다. 특송곡은 '하나님의 부르심'입니다."
+    },
+    {
+      "title": "# 남신도회 주관 전교인 한마음 등반대회",
+      "contents": "일시: 3.1(토) 오전 9:00 교회 집결\n장소: 불곡산(산상예배)\n중식: 오후 1:00 교회 식당\n참가 문의: 노진수 목사\n참가하신 분들에게는 기념품과 맛있는 식사를 제공합니다.\n많은 참여 부탁드립니다^^"
     }
   ],
   "ending_song": {
     "title_page_index": 23,
     "lyrics_page_index": 24,
-    "url": "(고정값) https://music.bugs.co.kr/track/30252593",
-    "title": "결단찬양제목",
+    "url": "https://music.bugs.co.kr/track/2578051",
+    "title": "내 눈 주의 영광을 보네",
     "splitted_lyrics": []
   }
 }

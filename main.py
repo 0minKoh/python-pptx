@@ -23,8 +23,8 @@ new_prs = edit_text_field(
 req_text = ""
 with open("prompts/user_input/req_text_paster.txt", "r", encoding="utf-8") as file:
     req_text = file.read()
-requirements_paster = {}
 req_paster_json_path = make_requirements_of_paster_json(req_text)
+requirements_paster = {}
 with open(req_paster_json_path, "r", encoding="utf-8") as file:
     requirements_paster = json.load(file)
 
@@ -42,7 +42,7 @@ NAME_OF_OFFERING = requirements_paster["NAME_OF_OFFERING"]
 NAME_OF_ADS = requirements_paster["NAME_OF_ADS"]
 
 bible_range_obj = requirements_paster["BIBLE_RANGE"]
-BIBLE_RANGE = f'{bible_range_obj["BIBLE_BOOK"]} {bible_range_obj["BEGIN_CH"]}:{bible_range_obj["BEGIN_VERSE"]} - {bible_range_obj["END_CH"]}:{bible_range_obj["END_VERSE"]}' 
+BIBLE_RANGE = f'{bible_range_obj["BIBLE_BOOK"]} {bible_range_obj["BIBLE_CH_BEGIN"]}:{bible_range_obj["BIBLE_VERSE_BEGIN"]} - {bible_range_obj["BIBLE_CH_END"]}:{bible_range_obj["BIBLE_VERSE_END"]}' 
 TITLE_OF_SERMON = requirements_paster["TITLE_OF_SERMON"]
 ENDING_SONG_TITLE = requirements_paster["ENDING_SONG_TITLE"]
 ENDING_PRAYER = requirements_paster["ENDING_PRAYER"]
@@ -106,9 +106,9 @@ after_crawled = []
 req_team_wakeup_txt = ""
 with open("prompts/user_input/req_text_teamwakeup.txt", "r", encoding="utf-8") as file:
   req_team_wakeup_txt = file.read()
-orginized_requirements_of_team_wakeup_json_path = organize_requirements_of_team_wakeup(requirements_txt=req_team_wakeup_txt)
+organized_req_wakeup_json_path = organize_requirements_of_team_wakeup(requirements_txt=req_team_wakeup_txt)
 
-with open(orginized_requirements_of_team_wakeup_json_path, "r", encoding="utf-8") as file:
+with open(organized_req_wakeup_json_path, "r", encoding="utf-8") as file:
     requirements = json.load(file)
     for requirement in requirements:
         crawled_data = crawl_lyrics(requirement["url"])
@@ -116,22 +116,26 @@ with open(orginized_requirements_of_team_wakeup_json_path, "r", encoding="utf-8"
           "title": requirement["title"],
           "lyrics": crawled_data
         })
+print(after_crawled)
 
 ## 2-2. LLM을 활용한 split 수행
 splitted_lyrics = []
 splited_lyrics_json_path = split_lyrics_to_json(after_crawled)
+
+splited_lyrics_json_path = "utils/json/requirements_team_wakeup_splited.json"
 with open(splited_lyrics_json_path, "r", encoding="utf-8") as file:
     splitted_lyrics = json.load(file) # [{"title": "제목", "splitted_lyrics": ["첫 번째 슬라이드 가사", "두 번째 슬라이드 가사"]}, ...]
 
-songs = []
 
+songs = []
 for index, splitted_lyric in enumerate(splitted_lyrics):
     songs.append({
       "title_page_index": SLIDE_INDEX_START_SONG + index * 2,
-      "lyrics_page_index": SLIDE_INDEX_START_SONG + index * 2,
+      "lyrics_page_index": SLIDE_INDEX_START_SONG + 1 + index * 2,
       "title": splitted_lyric["title"],
       "splitted_lyrics": splitted_lyric["splitted_lyrics"]
     })
+print(songs)
 
 # songs = [
 #   {

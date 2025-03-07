@@ -3,6 +3,7 @@ from utils.update_pptx import *
 from utils.get_datetime import get_sunday_text
 from utils.crawl import *
 import json
+from datetime import datetime
 
 prs = load_template("template/template__hansin4.pptx")
 
@@ -17,6 +18,7 @@ new_prs = edit_text_field(
   slide_index=0,
   is_title=True,
   new_text=next_sunday)
+print("Completed: 표지 수정", next_sunday)
 
 # 1. 기도자, 봉헌자, 광고, 성경봉독범위, 설교자, 결단찬양명, 축도자명 수정
 ## 1-1. Requirements LLM Execution & JSON import
@@ -27,6 +29,8 @@ req_paster_json_path = make_requirements_of_paster_json(req_text)
 requirements_paster = {}
 with open(req_paster_json_path, "r", encoding="utf-8") as file:
     requirements_paster = json.load(file)
+print("Completed: Make requirements of paster json")
+
 
 ## 1-2. PPT 슬라이드
 SLIDE_INDEX_PRAYER = 13
@@ -96,6 +100,7 @@ new_prs = edit_text_field(
   new_text=f"{ENDING_PRAYER} 목사",
   align_center=False
 )
+print("Completed: 기도자, 봉헌자, 광고, 성경봉독범위, 설교자, 결단찬양명, 축도자명 수정")
 
 # 2. 찬양 파트 수정
 current_prs = new_prs
@@ -116,7 +121,7 @@ with open(organized_req_wakeup_json_path, "r", encoding="utf-8") as file:
           "title": requirement["title"],
           "lyrics": crawled_data
         })
-print(after_crawled)
+print("Completed: Crawling Songs (Team Wakeup)")
 
 ## 2-2. LLM을 활용한 split 수행
 splitted_lyrics = []
@@ -125,6 +130,7 @@ splited_lyrics_json_path = split_lyrics_to_json(after_crawled)
 splited_lyrics_json_path = "utils/json/requirements_team_wakeup_splited.json"
 with open(splited_lyrics_json_path, "r", encoding="utf-8") as file:
     splitted_lyrics = json.load(file) # [{"title": "제목", "splitted_lyrics": ["첫 번째 슬라이드 가사", "두 번째 슬라이드 가사"]}, ...]
+print("Completed: Split Lyrics (Team Wakeup)")
 
 
 songs = []
@@ -135,7 +141,7 @@ for index, splitted_lyric in enumerate(splitted_lyrics):
       "title": splitted_lyric["title"],
       "splitted_lyrics": splitted_lyric["splitted_lyrics"]
     })
-print(songs)
+print("Completed: Organize Songs (Team Wakeup)")
 
 # songs = [
 #   {
@@ -188,7 +194,7 @@ for index, song in enumerate(songs):
       slide_index=song_title_page_index,
       is_title=True,
       new_text=title
-    )
+    ) 
 
     # 가사 페이지 수정
     added_slide_res = duplicate_and_add_slide(
@@ -201,10 +207,11 @@ for index, song in enumerate(songs):
     cumulative_added_slide_count += added_lyrics_slide_count
 
 new_prs = current_prs
-
+print("Completed: 찬양 파트 PPT 추가")
 
 # 3. 광고 페이지 추가
 ads = requirements_paster["ads"]
+SLIDE_INDEX_ADS_CONTENTS = 19
 # ads = [
 #   {
 #     "title": "# 광고 1",
@@ -216,20 +223,24 @@ ads = requirements_paster["ads"]
 #   }
 # ]
 
-page_of_ads = 19 + cumulative_added_slide_count
+page_of_ads = SLIDE_INDEX_ADS_CONTENTS + cumulative_added_slide_count
 added_page_count_ads = add_ads_slides(new_prs, ads, page_of_ads)
 cumulative_added_slide_count += (len(ads) - 1)
+print("Completed: 광고 페이지 추가")
 
 # 4. 성경봉독 슬라이드 추가
 bible_contents = get_bible_contents(bible_book=bible_range_obj["BIBLE_BOOK"], begin_ch=bible_range_obj["BIBLE_CH_BEGIN"], begin_verse=bible_range_obj["BIBLE_VERSE_BEGIN"], end_ch=bible_range_obj["BIBLE_CH_END"], end_verse=bible_range_obj["BIBLE_VERSE_END"])
+SLIDE_INDEX_BIBLE_CONTENTS = 21
+
 # bible_contents = [
 #     {"title": "요한복음 1:1", "contents": "요한복음 1:1 내용"},
 #     {"title": "요한복음 1:2", "contents": "요한복음 1:2 내용"},
 # ]
 
-page_of_bible = 21 + cumulative_added_slide_count
+page_of_bible = SLIDE_INDEX_BIBLE_CONTENTS + cumulative_added_slide_count
 add_bible_slides(new_prs, bible_contents, page_of_bible)
 cumulative_added_slide_count += (len(bible_contents) - 1)
+print("Completed: 성경 말씀 슬라이드 추가")
 
 
 # 5. 결단 찬양 수정
@@ -241,7 +252,8 @@ ending_song = requirements_paster["ending_song"]
 #   "title": "결단 찬양 제목",
 #   "splitted_lyrics": [] 
 # }
-ending_song_crawled_data = crawl_lyrics(ending_song["url"])
+
+ending_song["splitted_lyrics"] = crawl_lyrics(ending_song["url"])
 # ending_song["splitted_lyrics"] = split_lyrics_to_json(crawled_text=ending_song_crawled_data, json_url="utils/json/lyrics_ending_song.json")
 
 ending_song_title = ending_song["title"]
@@ -269,7 +281,13 @@ added_lyrics_slide_count = added_slide_res["added_slide_count"]
 cumulative_added_slide_count += added_lyrics_slide_count
 
 new_prs = added_slide_res["prs"]
+print("Completed: 결단 찬양 추가")
 
 
-# 프레젠테이션 저장
-save_presentation(new_prs, "res/test.pptx")
+# 프레젠테이션 저장 (path: res/날짜_청년한신_4부예배.pptx)
+from datetime import datetime
+today = datetime.today().strftime('%y%m%d')
+save_file_path = f"res/{today}_청년한신_4부예배"
+save_presentation(new_prs, save_file_path)
+print("Completed: All Process")
+print("Saved: ", save_file_path)

@@ -127,7 +127,8 @@ print("Completed: 기도자, 봉헌자, 광고, 성경봉독범위, 설교자, �
 
 # ## 2-2. LLM을 활용한 split 수행
 # splitted_lyrics = []
-# splited_lyrics_json_path = split_lyrics_to_json(after_crawled)
+# splited_lyrics_json_path = 'utils/json/requirements_team_wakeup_splited.json'
+# split_lyrics_to_json(crawled_text_list=after_crawled, json_path=splited_lyrics_json_path)
 
 # splited_lyrics_json_path = "utils/json/requirements_team_wakeup_splited.json"
 # with open(splited_lyrics_json_path, "r", encoding="utf-8") as file:
@@ -253,11 +254,15 @@ ending_song = requirements_paster["ending_song"]
 #   "lyrics_page_index": 24,
 #   "url": "https://music.bugs.co.kr/track/2578051",
 #   "title": "결단 찬양 제목",
-#   "splitted_lyrics": [] 
+#   "splitted_lyrics": []
 # }
 
-ending_song["splitted_lyrics"] = crawl_lyrics(ending_song["url"])
-# ending_song["splitted_lyrics"] = split_lyrics_to_json(crawled_text=ending_song_crawled_data, json_url="utils/json/lyrics_ending_song.json")
+ending_song_crawled_text = crawl_lyrics(ending_song["url"])
+ending_song_crawled_data = [ending_song_crawled_text]
+split_lyrics_to_json(crawled_text_list=ending_song_crawled_data, json_path="utils/json/lyrics_ending_song.json")
+
+with open("utils/json/lyrics_ending_song.json", "r", encoding="utf-8") as file:
+    ending_song["splitted_lyrics"] = json.load(file)
 
 ending_song_title = ending_song["title"]
 ending_song_splited_lyrics = ending_song["splitted_lyrics"]
@@ -290,7 +295,7 @@ print("Completed: 결단 찬양 추가")
 # 프레젠테이션 저장 (path: res/날짜_청년한신_4부예배.pptx)
 from datetime import datetime
 today = datetime.today().strftime('%y%m%d')
-save_file_path = f"res/{today}_청년한신_4부예배_bible.pptx"
+save_file_path = f"res/{today}_청년한신_4부예배.pptx"
 save_presentation(new_prs, save_file_path)
 print("Completed: All Process")
 print("Saved: ", save_file_path)

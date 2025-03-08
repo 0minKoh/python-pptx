@@ -38,41 +38,43 @@ def duplicate_and_add_slide(prs: PresentationType, duplicate_slide_index: int, s
     original_slide = prs.slides[duplicate_slide_index]
 
     i = 0
-    is_first_lyrics = True
 
     for lyrics in lyrics_data:
-        slide_text = lyrics["lyrics"]
-        # 첫 번째 가사는 기존 페이지의 글자를 수정함
-        if is_first_lyrics:
+        lyrics_dict = lyrics['lyrics']
+        splitted_lyrics = lyrics_dict["splitted_lyrics"]
+        is_first_lyrics = True
+        for slide_text in splitted_lyrics:
+            # 첫 번째 가사는 기존 페이지의 글자를 수정함
+            if is_first_lyrics:
+                prs = edit_text_field(
+                    prs=prs,
+                    slide_index=duplicate_slide_index,
+                    is_title=True,
+                    new_text=slide_text
+                )
+                is_first_lyrics = False
+                continue
+
+            # 새 슬라이드를 duplicate_slide_index 다음에 추가
+            slide_layout = original_slide.slide_layout
+            new_slide = prs.slides.add_slide(slide_layout)
+            new_slide_index = duplicate_slide_index + i + 1
+
+            old_index = prs.slides.index(new_slide)
+
+            xml_slides = prs.slides._sldIdLst  # pylint: disable=W0212
+            slides = list(xml_slides)
+            xml_slides.remove(slides[old_index])
+            xml_slides.insert(new_slide_index, slides[old_index])
+
+            # 텍스트 필드 편집
             prs = edit_text_field(
                 prs=prs,
-                slide_index=duplicate_slide_index,
-                is_title=True,
+                slide_index=new_slide_index,
+                is_title = True,
                 new_text=slide_text
             )
-            is_first_lyrics = False
-            continue
-
-        # 새 슬라이드를 duplicate_slide_index 다음에 추가
-        slide_layout = original_slide.slide_layout
-        new_slide = prs.slides.add_slide(slide_layout)
-        new_slide_index = duplicate_slide_index + i + 1
-
-        old_index = prs.slides.index(new_slide)
-
-        xml_slides = prs.slides._sldIdLst  # pylint: disable=W0212
-        slides = list(xml_slides)
-        xml_slides.remove(slides[old_index])
-        xml_slides.insert(new_slide_index, slides[old_index])
-
-        # 텍스트 필드 편집
-        prs = edit_text_field(
-            prs=prs,
-            slide_index=new_slide_index,
-            is_title = True,
-            new_text=slide_text
-        )
-        i += 1
+            i += 1
 
     return {
         "prs": prs,

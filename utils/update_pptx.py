@@ -1,6 +1,6 @@
 from pptx import Presentation
 from pptx.presentation import Presentation as PresentationType
-from pptx.enum.text import PP_ALIGN  # 추가
+from pptx.enum.text import PP_ALIGN, MSO_AUTO_SIZE
 
 
 def load_template(template_path: str) -> PresentationType:
@@ -11,16 +11,11 @@ def edit_text_field(prs: PresentationType, slide_index: int, is_title: bool, new
     if is_title:
         title = slide.shapes.title
         title.text = new_text
+        title.text_frame.auto_size = MSO_AUTO_SIZE.SHAPE_TO_FIT_TEXT
         if align_center == False:
             title.text_frame.paragraphs[0].alignment = PP_ALIGN.LEFT
     else:
-        if (ph_index != 11):
-            for shape in slide.shapes:
-                if shape.is_placeholder:
-                    print(shape.placeholder_format.idx)
-            content = slide.shapes.placeholders[ph_index]
-        else:   
-            content = slide.shapes.placeholders[11]
+        content = slide.shapes.placeholders[ph_index]
         content.text = new_text
     return prs
 
@@ -147,7 +142,6 @@ def add_bible_slides(prs: PresentationType, bible_data: list, bible_slide_index:
                 slide_index=bible_slide_index,
                 is_title=True,
                 new_text=title,
-                align_center=False
             )
             prs = edit_text_field(
                 prs=prs,
@@ -168,17 +162,19 @@ def add_bible_slides(prs: PresentationType, bible_data: list, bible_slide_index:
         slides = list(xml_slides)
         xml_slides.remove(slides[old_index])
         xml_slides.insert(new_slide_index, slides[old_index])
-    
+
+        print("title: ", title)
+        print("contents: ", contents)
+
         prs = edit_text_field(
             prs=prs,
-            slide_index=bible_slide_index,
+            slide_index=new_slide_index,
             is_title=True,
             new_text=title,
-            align_center=False
         )
         prs = edit_text_field(
             prs=prs,
-            slide_index=bible_slide_index,
+            slide_index=new_slide_index,
             is_title=False,
             new_text=contents,
             ph_index=10

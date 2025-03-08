@@ -39,6 +39,6 @@ def get_bible_contents(bible_book: str, begin_ch: int, begin_verse: int, end_ch:
     for small_tag in soup.find_all('small'):
         verse_number = small_tag.text
         verse_content = small_tag.next_sibling.strip()
-        verses.append({"title": f"마태복음 {verse_number}", "contents": verse_content})
+        verses.append({"title": f"{bible_book} {verse_number}", "contents": verse_content})
 
     return verses

@@ -1,4 +1,5 @@
 from os import environ as env
+import re
 from dotenv import load_dotenv
 from google import genai
 
@@ -10,7 +11,9 @@ def call_llm_api(prompt: str) -> str:
     response = client.models.generate_content(
         model="gemini-2.0-flash",
         contents=[prompt])
-    return response.text
+    
+    cleaned_response = re.sub(r'```json|```', '', response.text).strip()
+    return cleaned_response
 
 def make_requirements_of_paster_json(requirement_txt: str) -> str:
     # 1. import prompt template: prompt_requirements_paster_txt

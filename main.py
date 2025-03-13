@@ -267,7 +267,7 @@ with open("utils/json/lyrics_ending_song.json", "r", encoding="utf-8") as file:
     ending_song["splitted_lyrics"] = json.load(file)
 
 ending_song_title = ending_song["title"]
-ending_song_splited_lyrics = ending_song["splitted_lyrics"]
+ending_song_splited_lyrics = ending_song["splitted_lyrics"][0]["splitted_lyrics"]
 
 ending_song_title_page_index = ending_song["title_page_index"] + cumulative_added_slide_count
 ending_song_lyrics_page_index = ending_song["lyrics_page_index"] + cumulative_added_slide_count
